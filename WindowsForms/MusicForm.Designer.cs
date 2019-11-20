@@ -108,7 +108,7 @@
             this.AddMenuItem.Name = "AddMenuItem";
             this.AddMenuItem.Size = new System.Drawing.Size(105, 22);
             this.AddMenuItem.Text = "Dodaj";
-            this.AddMenuItem.Click += new System.EventHandler(this.AddMenuItem_Click);
+            this.AddMenuItem.Click += new System.EventHandler(this.AddContextMenuItem_Click);
             // 
             // SongsList
             // 
@@ -210,7 +210,7 @@
             this.FiltrComboBox});
             this.Tools.Location = new System.Drawing.Point(3, 0);
             this.Tools.Name = "Tools";
-            this.Tools.Size = new System.Drawing.Size(404, 25);
+            this.Tools.Size = new System.Drawing.Size(437, 25);
             this.Tools.TabIndex = 0;
             // 
             // AddStripButton
@@ -220,7 +220,7 @@
             this.AddStripButton.Name = "AddStripButton";
             this.AddStripButton.Size = new System.Drawing.Size(58, 22);
             this.AddStripButton.Text = "Dodaj";
-            this.AddStripButton.Click += new System.EventHandler(this.AddStripButton_Click);
+            this.AddStripButton.Click += new System.EventHandler(this.AddContextMenuItem_Click);
             // 
             // ModifyStripButton
             // 
@@ -229,7 +229,7 @@
             this.ModifyStripButton.Name = "ModifyStripButton";
             this.ModifyStripButton.Size = new System.Drawing.Size(81, 22);
             this.ModifyStripButton.Text = "Modyfikuj";
-            this.ModifyStripButton.Click += new System.EventHandler(this.ModifyStripButton_Click);
+            this.ModifyStripButton.Click += new System.EventHandler(this.ModifyContextMenuItem_Click);
             // 
             // DeleteStripButton
             // 
@@ -238,7 +238,7 @@
             this.DeleteStripButton.Name = "DeleteStripButton";
             this.DeleteStripButton.Size = new System.Drawing.Size(54, 22);
             this.DeleteStripButton.Text = "Usuń";
-            this.DeleteStripButton.Click += new System.EventHandler(this.DeleteStripButton_Click);
+            this.DeleteStripButton.Click += new System.EventHandler(this.DeleteContextMenuItem_Click);
             // 
             // StripSeparator
             // 

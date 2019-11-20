@@ -12,8 +12,8 @@ namespace WindowsForms
         public List<Song> songs = new List<Song>();
 
         public event Action<Song> AddSongEvent;
-        public event Action<ListViewItem> UpdateSongEvent;
-        public event Action<ListViewItem> DeleteSongEvent;
+        public event Action<Song> UpdateSongEvent;
+        public event Action<Song> DeleteSongEvent;
 
         public void AddSong(Song song)
         {
@@ -21,15 +21,15 @@ namespace WindowsForms
             AddSongEvent?.Invoke(song);
         }
 
-        public void UpdateSong(ListViewItem item)
+        public void UpdateSong(Song song)
         {
-            UpdateSongEvent?.Invoke(item);
+            UpdateSongEvent?.Invoke(song);
         }
 
-        public void DeleteSong(Song song, ListViewItem item)
+        public void DeleteSong(Song song)
         {
             songs.Remove(song);
-            DeleteSongEvent?.Invoke(item);
+            DeleteSongEvent?.Invoke(song);
         }
     }
 }

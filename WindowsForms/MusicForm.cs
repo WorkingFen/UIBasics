@@ -14,7 +14,6 @@ namespace WindowsForms
     {
         private Data Data { get; set; }
         private int NoData { get; set; }
-        private DateTime filterDate = new DateTime(2000, 1, 1, 0, 0, 0);
 
         public MusicForm(Data data)
         {
@@ -22,26 +21,6 @@ namespace WindowsForms
             Data = data;
             NoData = data.songs.Count;
             NoLabel.Text = NoData.ToString();
-        }
-
-        private void AddMenuItem_Click(object sender, EventArgs e)
-        {
-            AddContextMenuItem_Click(sender, e);
-        }
-
-        private void AddStripButton_Click(object sender, EventArgs e)
-        {
-            AddContextMenuItem_Click(sender, e);
-        }
-
-        private void ModifyStripButton_Click(object sender, EventArgs e)
-        {
-            ModifyContextMenuItem_Click(sender, e);
-        }
-
-        private void DeleteStripButton_Click(object sender, EventArgs e)
-        {
-            DeleteContextMenuItem_Click(sender, e);
         }
 
         private void AddContextMenuItem_Click(object sender, EventArgs e)
@@ -68,7 +47,7 @@ namespace WindowsForms
                     song.ReleaseDate = addModifyForm.SongDate;
                     song.Category = addModifyForm.SongCategory;
 
-                    Data.UpdateSong(SongsList.SelectedItems[0]);
+                    Data.UpdateSong(song);
                 }
             }
         }
@@ -77,9 +56,8 @@ namespace WindowsForms
         {
             if (SongsList.SelectedItems.Count == 1)
             {
-                ListViewItem item = SongsList.SelectedItems[0];
                 Song song = (Song)SongsList.SelectedItems[0].Tag;
-                Data.DeleteSong(song, item);
+                Data.DeleteSong(song);
             }
         }
 
@@ -93,94 +71,45 @@ namespace WindowsForms
 
         private void Data_AddSongEvent(Song song)
         {
-            ListViewItem item = new ListViewItem();
-            item.Tag = song;
-            UpdateItem(item);
-            switch (FiltrComboBox.Text)
+            if(FiltrCheck(song))
             {
-                case "(Brak)":
-                    SongsList.Items.Add(item);
-                    NoData++;
-                    break;
-                case "Data >= 2000 rok":
-                    if (song.ReleaseDate >= filterDate)
-                    {
-                        SongsList.Items.Add(item);
-                        NoData++;
-                    }
-                    break;
-                case "Data < 2000 rok":
-                    if (song.ReleaseDate < filterDate)
-                    {
-                        SongsList.Items.Add(item);
-                        NoData++;
-                    }
-                    break;
+                ListViewItem item = new ListViewItem();
+                item.Tag = song;
+                UpdateItem(item);
+                SongsList.Items.Add(item);
+                NoData++;
+                NoLabel.Text = NoData.ToString();
             }
-            NoLabel.Text = NoData.ToString();
         }
 
-        private void Data_UpdateSongEvent(ListViewItem item)
+        private void Data_UpdateSongEvent(Song song)
         {
             foreach(ListViewItem listItem in SongsList.Items)
-                if(item.Tag == listItem.Tag)
+                if(ReferenceEquals(song, listItem.Tag))
                 {
-                    UpdateItem(listItem);
-                    switch (FiltrComboBox.Text)
+                    if(FiltrCheck(song))
+                        UpdateItem(listItem);
+                    else
                     {
-                        case "Data >= 2000 rok":
-                            if (((Song)listItem.Tag).ReleaseDate < filterDate)
-                            {
-                                SongsList.Items.Remove(listItem);
-                                NoData--;
-                            }
-                            break;
-                        case "Data < 2000 rok":
-                            if (((Song)listItem.Tag).ReleaseDate >= filterDate)
-                            {
-                                SongsList.Items.Remove(listItem);
-                                NoData--;
-                            }
-                            break;
+                        SongsList.Items.Remove(listItem);
+                        NoData--;
+                        NoLabel.Text = NoData.ToString();
                     }
+                    return;
+                }
+            Data_AddSongEvent(song);
+        }
+
+        private void Data_DeleteSongEvent(Song song)
+        {
+            foreach (ListViewItem listItem in SongsList.Items)
+                if(ReferenceEquals(song, listItem.Tag))
+                {
+                    SongsList.Items.Remove(listItem);
+                    NoData--;
                     NoLabel.Text = NoData.ToString();
                     return;
                 }
-            Song song = (Song)item.Tag;
-            ListViewItem newItem = new ListViewItem();
-            newItem.Tag = song;
-            UpdateItem(newItem);
-            switch(FiltrComboBox.Text)
-            {
-                case "Data >= 2000 rok":
-                    if (song.ReleaseDate >= filterDate)
-                    {
-                        SongsList.Items.Add(newItem);
-                        NoData++;
-                    }
-                    break;
-                case "Data < 2000 rok":
-                    if (song.ReleaseDate < filterDate)
-                    {
-                        SongsList.Items.Add(newItem);
-                        NoData++;
-                    }
-                    break;
-            }
-            NoLabel.Text = NoData.ToString();
-        }
-
-        private void Data_DeleteSongEvent(ListViewItem item)
-        {
-            foreach (ListViewItem listItem in SongsList.Items)
-                if (item.Tag == listItem.Tag)
-                {
-                    SongsList.Items.Remove(listItem);
-                    break;
-                }
-
-            NoData--;
-            NoLabel.Text = NoData.ToString();
         }
 
         private void UpdateItem(ListViewItem item)
@@ -232,33 +161,29 @@ namespace WindowsForms
             SongsList.Items.Clear();
             NoData = 0;
             foreach (Song song in Data.songs)
-            {
-                ListViewItem item = new ListViewItem();
-                item.Tag = song;
-                UpdateItem(item);
-                switch (FiltrComboBox.Text)
+                if(FiltrCheck(song))
                 {
-                    case "(Brak)":
-                        SongsList.Items.Add(item);
-                        NoData++;
-                        break;
-                    case "Data >= 2000 rok":
-                        if (song.ReleaseDate >= filterDate)
-                        {
-                            SongsList.Items.Add(item);
-                            NoData++;
-                        }
-                        break;
-                    case "Data < 2000 rok":
-                        if (song.ReleaseDate < filterDate)
-                        {
-                            SongsList.Items.Add(item);
-                            NoData++;
-                        }
-                        break;
+                    ListViewItem item = new ListViewItem();
+                    item.Tag = song;
+                    UpdateItem(item);
+                    SongsList.Items.Add(item);
+                    NoData++;
                 }
-            }
             NoLabel.Text = NoData.ToString();
+        }
+
+        private bool FiltrCheck(Song song)
+        {
+            DateTime filterDate = new DateTime(2000, 1, 1, 0, 0, 0);
+            switch(FiltrComboBox.Text)
+            {
+                case "Data >= 2000 rok":
+                    return song.ReleaseDate >= filterDate;
+                case "Data < 2000 rok":
+                    return song.ReleaseDate < filterDate;
+                default:
+                    return true;
+            }
         }
     }
 }
