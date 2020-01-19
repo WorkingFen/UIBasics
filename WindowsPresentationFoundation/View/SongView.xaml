@@ -1,0 +1,24 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WindowsPresentationFoundation.View"
+             xmlns:Control="clr-namespace:WindowsPresentationFoundation.Control" x:Class="WindowsPresentationFoundation.View.SongView"
+             mc:Ignorable="d" 
+             Height="190" Width="390">
+    <Grid>
+        <Label Content="Tytuł" Margin="10,10,0,0" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <Label Content="Autor" Margin="10,41,0,0" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <Label Content="Data nagrania" Margin="10,72,0,0" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <Label Content="Kategoria" Margin="10,118,0,0" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="100,13,0,0" TextWrapping="Wrap" Text="{Binding Title}" VerticalAlignment="Top" Width="270"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="100,44,0,0" TextWrapping="Wrap" Text="{Binding Author}" VerticalAlignment="Top" Width="270"/>
+        <DatePicker HorizontalAlignment="Left" Height="23" Margin="100,75,0,0" SelectedDate="{Binding ReleaseDate}" VerticalAlignment="Top" Width="270"/>
+        <Control:ChangeCategory HorizontalAlignment="Left" Height="50" Margin="100,106,0,0" VerticalAlignment="Top" Width="270" Category="{Binding Category, Mode=TwoWay}"/>
+        <Grid>
+            <Button Content="Zapisz" Command="{Binding OkCommand}" CommandParameter="{Binding DataContext, RelativeSource={RelativeSource Self}}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,70,10" Width="75"/>
+            <Button Content="Anuluj" Command="{Binding CancelCommand}" CommandParameter="{Binding DataContext, RelativeSource={RelativeSource Self}}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="70,0,0,10" Width="75"/>
+        </Grid>
+    </Grid>
+</UserControl>
